@@ -1,0 +1,87 @@
+---
+name: Dongyuan
+surname: Gao
+position: "AI Engineer / LLMOps Intern | Working Student AI/ML"
+address: "Uerzlikon, 8926, Switzerland"
+phone: "+41 77 239 86 26"
+email: "gao.dongyuan2010@gmail.com"
+github: dydy2010
+linkedin: dongyuan-gao
+date: "`r format(Sys.time(), '%B %Y')`"
+profilepic: Gemini_Generated_1.png
+output:
+  vitae::awesomecv:
+    keep_tex: false
+header-includes:
+  - \renewcommand{\headersocialstyle}{\fontsize{7.7pt}{1em}\bodyfont\scshape\color{text}}
+  - \usepackage{enumitem}
+  - \setlist{nosep}
+headcolor: 414141
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(vitae)
+library(tibble)
+```
+
+# Profile
+
+I am an MSc Applied Information and Data Science student at HSLU, transitioning into AI engineering and LLMOps after 8 years of international supply chain project and operations work. I bring strong delivery, process-automation, and multi-stakeholder collaboration skills into AI engineering and seek an internship or working-student role in Switzerland.
+
+Date of Birth: 02.03.1992 \hspace{1em} | \hspace{1em} Nationality: German \hspace{1em} | \hspace{1em} Gender: Male \hspace{1em} 
+
+# Education
+
+```{r education}
+tribble(
+  ~ Degree, ~ Year, ~ Institution, ~ Where, ~ Details,
+  "MSc Applied Information and Data Science", "02.2025 - Present", "Hochschule Luzern", "Switzerland",
+    c("Relevant coursework: Data Acquisition & Visualization, GenAI, DevOps & LLMs, Machine Learning, Databases"),
+  "MA Translation and Intercultural Studies", "2015 - 2016", "Autonomous University of Barcelona", "Spain",
+    c("Grade 8.26/10; coursework in technical translation and NLP tools"),
+  "BA Spanish Language and Literature", "2011 - 2015", "Beijing Language and Culture University", "China / Spain",
+    c("Includes one year exchange at University of Santiago de Compostela")
+) %>%
+  detailed_entries(Degree, Year, Institution, Where, Details)
+```
+
+# Professional Experience
+
+```{r experience}
+tribble(
+  ~ Title, ~ Year, ~ Company, ~ Where, ~ Details,
+  "Project Specialist", "2017 - 2024", "Changjiu Logistics GmbH", "Hamburg, Germany",
+    c("Coordinated Europe-Asia logistics operations across air, rail, and sea transport",
+      "Supported launch of the first Milan-China freight train route (2017)",
+      "Automated recurring workflows with Excel/Python; hands-on data processing experience transferable to ML/AI pipelines",
+      "Managed multi-stakeholder projects across international partners")
+) %>%
+  detailed_entries(Title, Year, Company, Where, Details)
+```
+
+# Selected Projects
+
+```{r projects}
+tribble(
+  ~ Type, ~ Year, ~ Title, ~ Where, ~ Details,
+  "Master Thesis", "2026 - Present", "Agentic System for Healthcare (Confidential)", "HSLU, Switzerland",
+    c("Designing and evaluating an agentic AI system for a healthcare-related context; details available during interviews"),
+  "Course Project", "2025", "Predicting Student Success - Multi-Model ML Approach", "HSLU, Switzerland",
+    c("Built and compared Logistic Regression, SVM, and Neural Network classifiers; repo available on GitHub")
+) %>%
+  detailed_entries(Type, Year, Title, Where, Details)
+```
+
+# Technical Skills
+
+```{r skills}
+tribble(
+  ~ Category, ~ Skills,
+  "Programming", "Python, SQL, R, MySQL, Excel; Git, Docker",
+  "AI / ML", "Classification, Clustering, CNN, Prompt Engineering, RAG, LangChain, LangGraph, Eval",
+  "Other", "Tableau, RStudio; Google Data Analyst Certificate (2024)",
+  "Languages", " German (B2), English (C1), Spanish (C1)Chinese (Native)"
+) %>%
+  brief_entries(Skills, Category)
+```

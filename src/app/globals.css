@@ -1,0 +1,186 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #04070f;
+  --text: #eaf2fb;
+  --muted: #8ea0c0;
+  --dmn: #6ee7b7;
+  --sal: #a78bfa;
+  --cen: #38bdf8;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* offset anchor targets so the sticky nav doesn't cover headings */
+section[id] {
+  scroll-margin-top: 84px;
+}
+
+/* ---- lightweight aurora fluid background ---- */
+.fluid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: radial-gradient(120% 120% at 50% 0%, #0a1226 0%, #04070f 60%);
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px) saturate(1.35);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+.b1 { width: 56vw; height: 56vw; background: #0e7490; top: -12%; left: -8%; animation: d1 23s ease-in-out infinite; }
+.b2 { width: 52vw; height: 52vw; background: #4338ca; bottom: -16%; right: -10%; animation: d2 27s ease-in-out infinite; }
+.b3 { width: 42vw; height: 42vw; background: #7c3aed; top: 14%; right: 12%; animation: d3 31s ease-in-out infinite; }
+.b4 { width: 46vw; height: 46vw; background: #0891b2; bottom: 6%; left: 12%; animation: d4 25s ease-in-out infinite; }
+@keyframes d1 { 0%,100%{ transform: translate(0,0) scale(1);} 50%{ transform: translate(8vw,6vh) scale(1.12);} }
+@keyframes d2 { 0%,100%{ transform: translate(0,0) scale(1);} 50%{ transform: translate(-7vw,-5vh) scale(1.1);} }
+@keyframes d3 { 0%,100%{ transform: translate(0,0) scale(1);} 50%{ transform: translate(-6vw,7vh) scale(1.15);} }
+@keyframes d4 { 0%,100%{ transform: translate(0,0) scale(1);} 50%{ transform: translate(6vw,-6vh) scale(1.08);} }
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* =============================================================
+   Liquid-glass design system
+   - .glass        : static frosted surface (non-interactive cards)
+   - .glass-card   : .glass + hover lift/glow (clickable cards)
+   - .glass-btn    : pill button with specular highlight + light sweep
+   - .glass-btn-primary : gradient CTA with sheen + press
+   ============================================================= */
+
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px) saturate(1.5);
+  -webkit-backdrop-filter: blur(12px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* inner specular highlight = reads as real glass */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px) saturate(1.5);
+  -webkit-backdrop-filter: blur(12px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 8px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.3s ease,
+    border-color 0.25s ease;
+}
+.glass-card:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 12px 36px rgba(56, 189, 248, 0.18);
+  transform: translateY(-3px);
+}
+
+.glass-btn {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px) saturate(1.6);
+  -webkit-backdrop-filter: blur(10px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2), 0 4px 18px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.3s ease,
+    border-color 0.2s ease, color 0.2s ease;
+}
+/* the moving light sweep */
+.glass-btn::before,
+.glass-btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    115deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: skewX(-18deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.glass-btn:hover {
+  border-color: rgba(56, 189, 248, 0.55);
+  color: var(--cen);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 8px 30px rgba(56, 189, 248, 0.28);
+  transform: translateY(-2px);
+}
+.glass-btn:hover::before,
+.glass-btn-primary:hover::before {
+  left: 130%;
+}
+.glass-btn:active,
+.glass-btn-primary:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* active/selected state for glass pills (e.g. project filters) */
+.glass-btn.is-active {
+  border-color: rgba(56, 189, 248, 0.6);
+  color: var(--cen);
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.glass-btn-primary {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 6px 24px rgba(56, 189, 248, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+.glass-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 12px 36px rgba(56, 189, 248, 0.45);
+}
+
+/* respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .blob { animation: none; }
+  .glass-card,
+  .glass-btn,
+  .glass-btn-primary {
+    transition: none;
+  }
+  .glass-btn::before,
+  .glass-btn-primary::before {
+    display: none;
+  }
+  .glass-card:hover,
+  .glass-btn:hover,
+  .glass-btn-primary:hover {
+    transform: none;
+  }
+}

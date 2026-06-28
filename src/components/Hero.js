@@ -1,0 +1,86 @@
+import BrainCanvas from "@/components/BrainCanvas";
+import { profile, links, stats } from "@/data/content";
+
+// Assemble the email at render time (small spam-scraper deterrent).
+const email = `${links.emailUser}@${links.emailDomain}`;
+
+export default function Hero() {
+  return (
+    <header className="relative h-screen min-h-[640px] w-full overflow-hidden">
+      <BrainCanvas />
+
+      {/* text overlay with a top scrim for legibility */}
+      <div className="pointer-events-none absolute inset-0 z-[3] flex flex-col items-center px-7 pt-24 text-center">
+        <div className="mx-auto w-full max-w-wrap">
+          <p className="mb-3.5 text-xs uppercase tracking-[5px] text-muted">
+            <span className="text-dmn">{profile.kicker[0]}</span> ·{" "}
+            <span className="text-sal">{profile.kicker[1]}</span> ·{" "}
+            <span className="text-cen">{profile.kicker[2]}</span>
+          </p>
+
+          <h1 className="font-display text-[clamp(30px,5.2vw,56px)] font-bold leading-[1.04] tracking-tight [text-shadow:0_0_50px_rgba(120,180,255,0.28)]">
+            {profile.firstName}{" "}
+            <span className="bg-gradient-to-r from-dmn to-cen bg-clip-text text-transparent">
+              {profile.lastName}
+            </span>
+          </h1>
+
+          <p className="mt-2.5 font-display text-[clamp(15px,2.2vw,20px)] font-semibold tracking-wide">
+            {profile.role}
+          </p>
+
+          <p className="mx-auto mt-3.5 max-w-[460px] text-[clamp(14px,1.8vw,17px)] text-muted">
+            {profile.hook}
+          </p>
+
+          {/* 4 CTAs */}
+          <div className="pointer-events-auto mt-6 flex flex-wrap justify-center gap-3">
+            <a
+              href="#projects"
+              className="glass-btn-primary rounded-full bg-gradient-to-r from-dmn to-cen px-5 py-2.5 text-sm font-semibold text-bg"
+            >
+              View Projects
+            </a>
+            <a
+              href={links.resume}
+              download
+              className="glass-btn rounded-full px-5 py-2.5 text-sm font-semibold"
+            >
+              Download Resume
+            </a>
+            <a
+              href={`mailto:${email}`}
+              className="glass-btn rounded-full px-5 py-2.5 text-sm font-semibold"
+            >
+              Get in touch
+            </a>
+            <a
+              href={links.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-btn rounded-full px-5 py-2.5 text-sm font-semibold"
+            >
+              LinkedIn
+            </a>
+          </div>
+
+          {/* quick-stats strip */}
+          <div className="mt-5 flex flex-wrap justify-center gap-x-4 gap-y-2 text-[13px] text-muted">
+            {stats.map((s, i) => (
+              <span key={s.label} className="flex items-center gap-4">
+                <span>
+                  <b className="font-semibold text-ink">{s.value}</b> {s.label}
+                </span>
+                {i < stats.length - 1 && (
+                  <span className="text-white/20">·</span>
+                )}
+              </span>
+            ))}
+          </div>
+
+          <p className="mt-4 text-[13px] text-dmn/90">{profile.availability}</p>
+        </div>
+      </div>
+    </header>
+  );
+}
