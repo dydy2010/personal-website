@@ -29,6 +29,26 @@ export const links = {
   resume: "/resume.pdf",
 };
 
+// Labels for the hero brain animation (one per network phase).
+// "val" is the big word, "name" the brain network, "desc" ties it to my story.
+export const heroNets = {
+  dmn: {
+    val: "Humanistic",
+    name: "Default Mode Network",
+    desc: "4 languages · people · context",
+  },
+  sal: {
+    val: "Creative",
+    name: "Salience Network",
+    desc: "the switch · connecting what matters",
+  },
+  cen: {
+    val: "AI-Driven",
+    name: "Central Executive Network",
+    desc: "LLMs · agents · evaluation",
+  },
+};
+
 export const stats = [
   { value: "8 yrs", label: "delivery" },
   { value: "4", label: "languages" },
@@ -97,13 +117,31 @@ export const timeline = [
 
 export const projects = [
   {
-    title: "Agentic System for Healthcare",
+    title: "Agentic System for Radiology",
     badge: "Thesis · in progress",
     tags: ["Agentic AI", "LLMs", "Evaluation"],
-    problem: "Healthcare teams drown in fragmented information.",
-    approach: "An agentic system that reasons over tasks and tools (LangGraph) with evaluation built in.",
+    problem: "Radiology teams juggle fragmented information across reports, guidelines, and imaging workflows.",
+    approach: "Designing and evaluating an agentic AI system (LangGraph) that reasons over tasks and tools, with evaluation built in from the start.",
     result: "In progress; full details over an interview (confidential).",
     links: [],
+  },
+  {
+    title: "Wikipedia Neutrality Monitor",
+    badge: "IBM watsonx Challenge · Team",
+    tags: ["NLP", "LLMs", "RAG"],
+    problem: "Wikipedia's neutrality varies across language editions, and manual bias review doesn't scale.",
+    approach: "Built a pipeline over 5,000 articles and 1,000 entities in 5 languages. Dual bias detection: sentiment lexicons (VADER + language-specific) and LLMs (zero-shot BART-MNLI, fine-tuned XLM-R), plus a dashboard and a RAG chatbot (MiniLM embeddings, FAISS, Gradio).",
+    result: "XLM-R F1 improved 0.19 → 0.60; an estimated 30–50% cut in manual review time for editors.",
+    links: [],
+  },
+  {
+    title: "Self-Driving Perception Pipeline",
+    badge: "2026 · Computer Vision · Team",
+    tags: ["Computer Vision", "Deep Learning", "Python"],
+    problem: "Understanding a driving scene takes more than one model — detection, classification, segmentation, and explanation.",
+    approach: "A 4-stage pipeline on driving video: fine-tuned YOLO (11 traffic classes), frozen OpenCLIP + linear probe for car-brand recognition (20 brands), SegFormer-B5 semantic segmentation, and a local VLM (Ollama) for captions and frame Q&A.",
+    result: "End-to-end annotated video demos, evaluated with mAP@0.5 / mAP@0.5:0.95. Code on GitHub.",
+    links: [{ label: "GitHub", url: "https://github.com/dydy2010/computer_vision_hslu_2026" }],
   },
   {
     title: "Predicting Student Success",
@@ -112,21 +150,28 @@ export const projects = [
     problem: "Can we flag at-risk students early from their academic and demographic data?",
     approach: "Cleaned and explored the dataset, engineered features, then trained and compared Logistic Regression, SVM, and a neural network using cross-validation on standard classification metrics (accuracy, F1).",
     result: "A clear read on which model earns its complexity — a strong, interpretable baseline before reaching for a neural net. Code on GitHub.",
-    links: [{ label: "GitHub", url: "https://github.com/dydy2010" }],
+    links: [{ label: "GitHub", url: "https://github.com/dydy2010/machine_learning_I_Project" }],
   },
   {
-    title: "Coming soon",
-    badge: "Placeholder",
-    tags: ["RAG", "LLM Agent", "Data-viz"],
-    problem: "The brain's still loading.",
-    approach: "A RAG app, an LLM agent, and a data-viz piece are on the way.",
-    result: "Check back soon.",
-    links: [],
-    placeholder: true,
+    title: "SNB Policy Rates & Inflation",
+    badge: "2025 · Time Series · Team",
+    tags: ["R", "Time Series", "Data Analysis"],
+    problem: "Do SNB policy-rate decisions actually move Swiss core inflation?",
+    approach: "Time series analysis in R: ADF stationarity tests, lagged regression, event studies around rate shifts, VAR, Granger causality, and ARIMA forecasting — published as a Quarto report.",
+    result: "Policy rates Granger-cause inflation (not the other way around); the Oct 2022 hike had a significant effect. Full report and code on GitHub.",
+    links: [{ label: "GitHub", url: "https://github.com/dydy2010/time_series_project" }],
   },
 ];
 
-export const projectFilters = ["All", "Agentic AI", "LLMs", "ML", "RAG"];
+export const projectFilters = [
+  "All",
+  "Agentic AI",
+  "LLM",
+  "RAG",
+  "Computer Vision",
+  "ML",
+  "Time Series",
+];
 
 export const skills = [
   {
@@ -146,6 +191,45 @@ export const skills = [
     items: ["Tableau", "RStudio", "Google Data Analytics Certificate (2024)"],
   },
 ];
+
+// Copy for the /legal page (Impressum + privacy notice).
+// NOTE: if the site ever adds analytics, a contact form, or anything
+// commercial (e.g. freelancing), the privacy section must be expanded.
+export const legal = {
+  title: "Legal & Privacy",
+  updated: "July 2026",
+  intro:
+    "This page explains who runs this website and how it handles your data. It is provided in good faith and is not legal advice.",
+  owner: {
+    heading: "Site Owner (Impressum)",
+    name: "Dongyuan Gao",
+    // TODO: replace with your real city before publishing
+    place: "[Your City], Switzerland",
+  },
+  sections: [
+    {
+      heading: "Copyright",
+      body: [
+        "© 2026 Dongyuan Gao. All text, the design, and the brain animation on this site are my own work. Project and product names mentioned here (for example IBM watsonx) belong to their respective owners and are referenced for factual description only.",
+      ],
+    },
+    {
+      heading: "External Links",
+      body: [
+        "This site links to external websites such as GitHub and LinkedIn. I have no influence over their content and take no responsibility for it — their own terms and privacy policies apply.",
+      ],
+    },
+    {
+      heading: "Privacy",
+      body: [
+        "Controller: Dongyuan Gao (contact details above).",
+        "This site sets no cookies and uses no analytics, tracking, or contact forms. The only personal data processed are technical server logs (IP address, browser type, time of access), which the hosting provider Vercel Inc. (USA) processes solely to deliver and secure the site, and keeps only as long as needed for operation and security.",
+        "Because the site is hosted by a US provider, this data may be processed in the USA. Switzerland recognizes the Swiss–US Data Privacy Framework for such transfers; details are available from the hosting provider.",
+        "If you email me, your message is voluntary, used only to reply, and never shared. You can ask me at any time to access, correct, or delete personal data concerning you.",
+      ],
+    },
+  ],
+};
 
 export const languages = {
   intro:

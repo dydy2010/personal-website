@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { profile, links } from "@/data/content";
 
 const email = `${links.emailUser}@${links.emailDomain}`;
@@ -30,6 +31,9 @@ export default function Footer() {
           >
             GitHub
           </a>
+          <Link href="/legal" className="hover:text-ink">
+            Legal &amp; Privacy
+          </Link>
         </div>
       </div>
     </footer>

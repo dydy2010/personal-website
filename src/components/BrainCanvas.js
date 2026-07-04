@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { heroNets } from "@/data/content";
 
 // Triple Network Model "Thinking Brain" hero animation.
 // Ported from the locked aurora mockup into a self-contained React client component.
@@ -9,11 +10,14 @@ import { useEffect, useRef } from "react";
 //  - All drawing happens on a <canvas> via requestAnimationFrame.
 //  - We pause the loop when off-screen (IntersectionObserver) to save battery.
 //  - We honor prefers-reduced-motion by drawing one calm static frame.
-//  - Modes auto-rotate on a timer (Humanistic → AI-Driven → Creative → flow).
+//  - After a one-time intro (drift → assemble), the three networks cycle
+//    automatically: Humanistic → Creative → AI-Driven, ~5s each, with a
+//    short animated "hand-over" between them. The mouse only adds parallax.
 export default function BrainCanvas() {
   const canvasRef = useRef(null);
   const tintRef = useRef(null);
   const capRef = useRef(null);
+  const capDotRef = useRef(null);
   const capValRef = useRef(null);
   const capMetaRef = useRef(null);
 
@@ -22,12 +26,20 @@ export default function BrainCanvas() {
     const ctx = canvas.getContext("2d");
     const tintEl = tintRef.current;
     const capEl = capRef.current;
+    const capDot = capDotRef.current;
     const capVal = capValRef.current;
     const capMeta = capMetaRef.current;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
+
+    // next/font gives the display font a generated family name,
+    // so read it from the CSS variable instead of hard-coding "Space Grotesk"
+    const displayFont =
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--font-display")
+        .trim() || '"Space Grotesk"';
 
     // ---- configuration ----
     const OW = 420;
@@ -44,6 +56,7 @@ export default function BrainCanvas() {
     let brainPts = [];
     let NETS = {};
     let parX = 0, parY = 0, parTX = 0, parTY = 0;
+    let tintAt = "50% 55%"; // glow position, updated in resize()
     let running = true; // off-screen pause for the whole loop
     let rafId = 0;
     const mouse = { x: -9999, y: -9999 };
@@ -91,20 +104,18 @@ export default function BrainCanvas() {
 
       const bx = 70, by = 70, bw = 282, bh = 188;
       const H = (fx, fy) => map(bx + fx * bw, by + fy * bh);
+      // label text (val/name/desc) lives in src/data/content.js
       NETS = {
         dmn: {
-          color: "#6ee7b7", val: "Humanistic", name: "Default Mode Network",
-          desc: "rest · reflection · imagination", speed: 0.4,
+          color: "#6ee7b7", ...heroNets.dmn, speed: 0.4,
           hubs: [H(0.12, 0.62), H(0.82, 0.32), H(0.7, 0.55)], edges: [[0, 1], [1, 2], [0, 2]],
         },
         cen: {
-          color: "#38bdf8", val: "AI-Driven", name: "Central Executive Network",
-          desc: "focus · analysis · goals", speed: 1.0,
+          color: "#38bdf8", ...heroNets.cen, speed: 1.0,
           hubs: [H(0.22, 0.28), H(0.74, 0.42), H(0.3, 0.45)], edges: [[0, 1], [0, 2], [2, 1]],
         },
         sal: {
-          color: "#a78bfa", val: "Creative", name: "Salience Network",
-          desc: "the switch · what matters", speed: 0.7,
+          color: "#a78bfa", ...heroNets.sal, speed: 0.7,
           hubs: [H(0.44, 0.55), H(0.4, 0.38), H(0.52, 0.58)], edges: [[0, 1], [1, 2], [0, 2]],
         },
       };
@@ -125,18 +136,27 @@ export default function BrainCanvas() {
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      // Desktop: brain sits in the bottom-right corner (partially off-screen).
+      // Desktop: brain sits in the lower-right, balancing the text block top-left.
       // Mobile: brain is smaller and centered behind the text.
       if (w < 640) {
         scale = Math.min((w * 0.65) / OW, (h * 0.38) / OH);
         cx = w * 0.5;
         cy = h * 0.65;
       } else {
-        scale = Math.min((w * 0.48) / OW, (h * 0.55) / OH);
-        cx = w * 0.78;
-        cy = h * 0.72;
+        scale = Math.min((w * 0.68) / OW, (h * 0.79) / OH);
+        cx = w * 0.74;
+        cy = h * 0.62;
       }
+      // keep the colored glow centered on wherever the brain actually is
+      tintAt = Math.round((cx / w) * 100) + "% " + Math.round((cy / h) * 100) + "%";
       buildBrain();
+      // pin the caption pill just under the brain's real bottom edge
+      // (measured from the mapped particle targets, not the source box,
+      // because the brain shape doesn't fill its full 330px height)
+      let brainBottom = 0;
+      for (const p of brainPts) if (p.y > brainBottom) brainBottom = p.y;
+      capEl.style.left = cx + "px";
+      capEl.style.top = Math.min(brainBottom + 28, h - 64) + "px";
       for (let i = 0; i < particles.length; i++) {
         const t = brainPts[i % brainPts.length];
         particles[i].tx = t.x;
@@ -162,15 +182,29 @@ export default function BrainCanvas() {
       }
     }
 
-    const SEQ = [
+    // Intro plays exactly once: particles drift, then assemble into the brain.
+    const INTRO = [
+      { n: "flow", d: 3200 },
       { n: "assemble", d: 2400 },
-      { n: "dmn", d: 3600 },
-      { n: "toCen", d: 1500 },
-      { n: "cen", d: 3600 },
-      { n: "toDmn", d: 1500 },
-      { n: "flow", d: 3000 },
     ];
-    let phase = "flow", phaseDur = 3000, phaseStart = 0, seqIdx = -1;
+    // Main loop: each network holds ~5s, with a short hand-over in between.
+    const SEQ = [
+      { n: "dmn", d: 5000 },
+      { n: "toSal", d: 1200 },
+      { n: "sal", d: 5000 },
+      { n: "toCen", d: 1200 },
+      { n: "cen", d: 5000 },
+      { n: "toDmn", d: 1200 },
+    ];
+    // For each hand-over phase: which network we come from and go to.
+    const SWITCHES = {
+      toSal: ["dmn", "sal"],
+      toCen: ["sal", "cen"],
+      toDmn: ["cen", "dmn"],
+    };
+    let phase = "flow", phaseDur = 3200, phaseStart = 0;
+    let introIdx = -1, seqIdx = -1;
+    let firstNet = true; // gently fade in the very first network
 
     function setPhase(name, dur, now) {
       phase = name;
@@ -178,44 +212,35 @@ export default function BrainCanvas() {
       phaseStart = now;
       updateCaption(name);
     }
-    function kickParticles() {
-      for (const p of particles) {
-        const a = Math.random() * 6.283, sp = 2.4 + Math.random() * 3.2;
-        p.vx = Math.cos(a) * sp;
-        p.vy = Math.sin(a) * sp;
-      }
-    }
     function nextPhase(now) {
+      // walk through the intro once, then loop the network sequence forever
+      if (introIdx < INTRO.length - 1) {
+        introIdx++;
+        const s = INTRO[introIdx];
+        setPhase(s.n, s.d, now);
+        return;
+      }
       seqIdx = (seqIdx + 1) % SEQ.length;
       const s = SEQ[seqIdx];
       setPhase(s.n, s.d, now);
-      if (s.n === "flow") kickParticles();
     }
     function updateCaption(name) {
-      let net = null;
-      if (name === "dmn") net = NETS.dmn;
-      else if (name === "cen") net = NETS.cen;
-      else if (name === "toCen" || name === "toDmn") net = NETS.sal;
+      // during a hand-over, already show the caption of the target network
+      const key = SWITCHES[name] ? SWITCHES[name][1] : name;
+      const net = NETS[key];
       if (!net) {
         capEl.style.opacity = 0;
         return;
       }
+      capDot.style.background = net.color;
+      capDot.style.boxShadow = "0 0 8px " + net.color;
       capVal.textContent = net.val;
       capVal.style.color = net.color;
       capMeta.textContent = net.name + " · " + net.desc;
       capEl.style.opacity = 1;
     }
-    const envelope = (p) => {
-      if (p < 0.22) return p / 0.22;
-      if (p > 0.78) return (1 - p) / 0.22;
-      return 1;
-    };
-    const activeNet = () => {
-      if (phase === "dmn") return NETS.dmn;
-      if (phase === "cen") return NETS.cen;
-      if (phase === "toCen" || phase === "toDmn") return NETS.sal;
-      return null;
-    };
+    // NETS keys are "dmn" / "sal" / "cen", same as the hold-phase names.
+    const activeNet = () => NETS[phase] || null;
 
     function step(now) {
       const t = now * 0.001;
@@ -306,8 +331,8 @@ export default function BrainCanvas() {
       ctx.restore();
     }
 
-    function drawSwitch(sal, target, k, now) {
-      const a = centroid(sal), b = centroid(target);
+    function drawSwitch(from, to, k, now) {
+      const a = centroid(from), b = centroid(to);
       const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2 - 46;
       const qp = (tt) => ({
         x: (1 - tt) * (1 - tt) * a.x + 2 * (1 - tt) * tt * mx + tt * tt * b.x,
@@ -317,9 +342,9 @@ export default function BrainCanvas() {
       ctx.translate(parX * 13, parY * 13);
       ctx.globalAlpha = k;
       ctx.lineCap = "round";
-      ctx.strokeStyle = sal.color;
+      ctx.strokeStyle = from.color;
       ctx.lineWidth = 2.4;
-      ctx.shadowColor = sal.color;
+      ctx.shadowColor = from.color;
       ctx.shadowBlur = 16;
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
@@ -331,22 +356,22 @@ export default function BrainCanvas() {
           const ps = qp(Math.max(0, tt - s * 0.03));
           ctx.beginPath();
           ctx.arc(ps.x, ps.y, 3 - s * 0.4, 0, 6.283);
-          ctx.fillStyle = hexA(target.color, 0.5 * (1 - s / 6));
+          ctx.fillStyle = hexA(to.color, 0.5 * (1 - s / 6));
           ctx.shadowBlur = 0;
           ctx.fill();
         }
         ctx.beginPath();
         ctx.arc(pt.x, pt.y, 3.4, 0, 6.283);
         ctx.fillStyle = "#fff";
-        ctx.shadowColor = target.color;
+        ctx.shadowColor = to.color;
         ctx.shadowBlur = 18;
         ctx.fill();
       }
       const flash = 0.5 + 0.5 * Math.sin(now * 0.006);
       ctx.beginPath();
       ctx.arc(b.x, b.y, 6 + flash * 4, 0, 6.283);
-      ctx.fillStyle = hexA(target.color, 0.25 + 0.25 * flash);
-      ctx.shadowColor = target.color;
+      ctx.fillStyle = hexA(to.color, 0.25 + 0.25 * flash);
+      ctx.shadowColor = to.color;
       ctx.shadowBlur = 22;
       ctx.fill();
       ctx.restore();
@@ -395,21 +420,34 @@ export default function BrainCanvas() {
             ctx.stroke();
           }
         }
-        ctx.font = size.toFixed(1) + 'px "Space Grotesk","PingFang SC","Hiragino Sans",sans-serif';
+        ctx.font = size.toFixed(1) + "px " + displayFont + ',"PingFang SC","Hiragino Sans",sans-serif';
         ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + a.toFixed(2) + ")";
         ctx.fillText(p.ch, p.dx, p.dy);
       }
       if (mActive) drawReticle(mouse.x, mouse.y, now);
 
       const net = activeNet();
+      const sw = SWITCHES[phase];
       if (net) {
-        const prog = Math.min((now - phaseStart) / phaseDur, 1), k = envelope(prog);
-        drawNet(net, k, now);
-        if (phase === "toCen" || phase === "toDmn") {
-          drawSwitch(net, phase === "toCen" ? NETS.cen : NETS.dmn, k, now);
+        // holding one network: draw it at full strength
+        let k = 1;
+        if (firstNet) {
+          k = Math.min((now - phaseStart) / 800, 1);
+          if (k >= 1) firstNet = false;
         }
+        drawNet(net, k, now);
         tintEl.style.background =
-          "radial-gradient(75% 65% at 50% 55%, " + hexA(net.color, 0.18) + " 0%, rgba(0,0,0,0) 70%)";
+          "radial-gradient(60% 55% at " + tintAt + ", " + hexA(net.color, 0.18) + " 0%, rgba(0,0,0,0) 70%)";
+        tintEl.style.opacity = 1;
+      } else if (sw) {
+        // hand-over: cross-fade the two networks and animate the switch arc
+        const prog = Math.min((now - phaseStart) / phaseDur, 1);
+        const from = NETS[sw[0]], to = NETS[sw[1]];
+        drawNet(from, 1 - prog, now);
+        drawNet(to, prog, now);
+        drawSwitch(from, to, Math.sin(prog * Math.PI), now);
+        tintEl.style.background =
+          "radial-gradient(60% 55% at " + tintAt + ", " + hexA(to.color, 0.18) + " 0%, rgba(0,0,0,0) 70%)";
         tintEl.style.opacity = 1;
       } else {
         tintEl.style.opacity = 0;
@@ -432,6 +470,7 @@ export default function BrainCanvas() {
         particles[i].x = t.x;
         particles[i].y = t.y;
       }
+      firstNet = false; // skip the fade-in so the static frame is fully visible
       setPhase("dmn", 1, performance.now());
       render(performance.now());
     }
@@ -461,7 +500,7 @@ export default function BrainCanvas() {
       return () => window.removeEventListener("resize", drawStatic);
     }
 
-    setPhase("flow", 3200, performance.now());
+    nextPhase(performance.now()); // starts the intro (drift → assemble)
     canvas.addEventListener("mousemove", onMove);
     canvas.addEventListener("mouseleave", onLeave);
     window.addEventListener("resize", resize);
@@ -502,12 +541,14 @@ export default function BrainCanvas() {
         className="pointer-events-none absolute inset-0 z-[1] opacity-0 mix-blend-screen transition-opacity duration-1000"
       />
       <canvas ref={canvasRef} className="absolute inset-0 z-[2] block h-full w-full" />
+      {/* compact one-line pill; left/top are set in resize() to hug the brain */}
       <div
         ref={capRef}
-        className="absolute bottom-8 left-1/2 z-[4] -translate-x-1/2 rounded-2xl border border-white/10 bg-[rgba(20,28,48,0.35)] px-6 py-3 text-center opacity-0 backdrop-blur-md transition-opacity duration-700 sm:bottom-8 sm:left-auto sm:right-8 sm:translate-x-0"
+        className="absolute z-[4] flex -translate-x-1/2 items-center gap-2.5 whitespace-nowrap rounded-full border border-white/10 bg-[rgba(20,28,48,0.4)] px-4 py-2 opacity-0 backdrop-blur-md transition-opacity duration-700"
       >
-        <div ref={capValRef} className="font-display text-2xl font-bold tracking-wide sm:text-3xl" />
-        <div ref={capMetaRef} className="mt-1 text-xs uppercase tracking-[1.5px] text-muted" />
+        <span ref={capDotRef} className="h-2 w-2 shrink-0 rounded-full" />
+        <span ref={capValRef} className="font-display text-sm font-bold tracking-wide sm:text-base" />
+        <span ref={capMetaRef} className="hidden text-[11px] uppercase tracking-[1.5px] text-muted sm:block" />
       </div>
     </>
   );
