@@ -16,7 +16,7 @@ export default function Projects() {
 
   return (
     <section id="projects" className="relative z-10 mx-auto max-w-wrap px-7 py-24">
-      <p className="text-xs uppercase tracking-[4px] text-muted">Projects</p>
+      <p className="text-sm uppercase tracking-[4px] text-muted">Projects</p>
       <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
         Things I&apos;ve built (and am building)
       </h2>
@@ -55,7 +55,7 @@ export default function Projects() {
             >
               <div className="flex items-start justify-between gap-3">
                 <h3 className="font-display text-lg font-semibold">{p.title}</h3>
-                <span className="shrink-0 rounded-full bg-white/5 px-2.5 py-1 text-[11px] text-muted">
+                <span className="shrink-0 rounded-full bg-white/5 px-2.5 py-1 text-xs text-muted">
                   {p.badge}
                 </span>
               </div>
@@ -79,7 +79,7 @@ export default function Projects() {
                 {p.tags.map((t) => (
                   <span
                     key={t}
-                    className="rounded-full border border-white/10 px-2.5 py-0.5 text-[11px] text-muted"
+                    className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-muted"
                   >
                     {t}
                   </span>

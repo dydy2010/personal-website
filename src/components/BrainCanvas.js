@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
 //  - All drawing happens on a <canvas> via requestAnimationFrame.
 //  - We pause the loop when off-screen (IntersectionObserver) to save battery.
 //  - We honor prefers-reduced-motion by drawing one calm static frame.
-//  - Hovering the hero pauses the auto-cycle so visitors can read each network.
+//  - Modes auto-rotate on a timer (Humanistic → AI-Driven → Creative → flow).
 export default function BrainCanvas() {
   const canvasRef = useRef(null);
   const tintRef = useRef(null);
@@ -44,7 +44,6 @@ export default function BrainCanvas() {
     let brainPts = [];
     let NETS = {};
     let parX = 0, parY = 0, parTX = 0, parTY = 0;
-    let paused = false; // hover pause for auto-cycle
     let running = true; // off-screen pause for the whole loop
     let rafId = 0;
     const mouse = { x: -9999, y: -9999 };
@@ -126,9 +125,17 @@ export default function BrainCanvas() {
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      scale = Math.min((w * 0.55) / OW, (h * 0.4) / OH);
-      cx = w / 2;
-      cy = h * 0.62;
+      // Desktop: brain sits in the bottom-right corner (partially off-screen).
+      // Mobile: brain is smaller and centered behind the text.
+      if (w < 640) {
+        scale = Math.min((w * 0.65) / OW, (h * 0.38) / OH);
+        cx = w * 0.5;
+        cy = h * 0.65;
+      } else {
+        scale = Math.min((w * 0.48) / OW, (h * 0.55) / OH);
+        cx = w * 0.78;
+        cy = h * 0.72;
+      }
       buildBrain();
       for (let i = 0; i < particles.length; i++) {
         const t = brainPts[i % brainPts.length];
@@ -214,10 +221,8 @@ export default function BrainCanvas() {
       const t = now * 0.001;
       parX += (parTX - parX) * 0.05;
       parY += (parTY - parY) * 0.05;
-      if (!paused) {
-        const el = now - phaseStart;
-        if (el > phaseDur) nextPhase(now);
-      }
+      const el = now - phaseStart;
+      if (el > phaseDur) nextPhase(now);
       const flowing = phase === "flow";
       for (const p of particles) {
         if (flowing) {
@@ -398,7 +403,7 @@ export default function BrainCanvas() {
 
       const net = activeNet();
       if (net) {
-        const prog = (now - phaseStart) / phaseDur, k = envelope(prog);
+        const prog = Math.min((now - phaseStart) / phaseDur, 1), k = envelope(prog);
         drawNet(net, k, now);
         if (phase === "toCen" || phase === "toDmn") {
           drawSwitch(net, phase === "toCen" ? NETS.cen : NETS.dmn, k, now);
@@ -438,14 +443,12 @@ export default function BrainCanvas() {
       mouse.y = e.clientY - rect.top;
       parTX = (mouse.x / w - 0.5) * 2;
       parTY = (mouse.y / h - 0.5) * 2;
-      paused = true; // hovering reveals/holds the current network
     };
     const onLeave = () => {
       mouse.x = -9999;
       mouse.y = -9999;
       parTX = 0;
       parTY = 0;
-      paused = false;
     };
 
     // ---- boot ----
@@ -469,7 +472,7 @@ export default function BrainCanvas() {
         const visible = entries[0].isIntersecting;
         if (visible && !running) {
           running = true;
-          phaseStart = performance.now() - 0; // resume cleanly
+          phaseStart = performance.now(); // resume cleanly
           rafId = requestAnimationFrame(loop);
         } else if (!visible) {
           running = false;
@@ -501,7 +504,7 @@ export default function BrainCanvas() {
       <canvas ref={canvasRef} className="absolute inset-0 z-[2] block h-full w-full" />
       <div
         ref={capRef}
-        className="absolute bottom-16 left-1/2 z-[4] -translate-x-1/2 rounded-2xl border border-white/10 bg-[rgba(20,28,48,0.35)] px-6 py-3 text-center opacity-0 backdrop-blur-md transition-opacity duration-700"
+        className="absolute bottom-8 left-1/2 z-[4] -translate-x-1/2 rounded-2xl border border-white/10 bg-[rgba(20,28,48,0.35)] px-6 py-3 text-center opacity-0 backdrop-blur-md transition-opacity duration-700 sm:bottom-8 sm:left-auto sm:right-8 sm:translate-x-0"
       >
         <div ref={capValRef} className="font-display text-2xl font-bold tracking-wide sm:text-3xl" />
         <div ref={capMetaRef} className="mt-1 text-xs uppercase tracking-[1.5px] text-muted" />

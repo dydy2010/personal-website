@@ -14,7 +14,7 @@ export default function Contact() {
   return (
     <section id="contact" className="relative z-10 mx-auto max-w-wrap px-7 py-24">
       <Reveal>
-        <p className="text-xs uppercase tracking-[4px] text-muted">Contact</p>
+        <p className="text-sm uppercase tracking-[4px] text-muted">Contact</p>
         <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
           Let&apos;s build something that thinks
         </h2>

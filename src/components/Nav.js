@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { profile, links } from "@/data/content";
 
 // Absolute anchors (with leading "/") so they work from any page, e.g. /story.
@@ -17,9 +17,31 @@ const email = `${links.emailUser}@${links.emailDomain}`;
 export default function Nav() {
   // controls the mobile dropdown menu (open/closed)
   const [open, setOpen] = useState(false);
+  const navRef = useRef(null);
+
+  // close the mobile menu on Escape or click-outside
+  useEffect(() => {
+    if (!open) return;
+
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onClick = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onClick);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onClick);
+    };
+  }, [open]);
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/50 backdrop-blur-md">
+    <nav ref={navRef} className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/50 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-wrap items-center justify-between px-7">
         <a
           href="/"

@@ -10,6 +10,8 @@
   --sal: #a78bfa;
   --cen: #38bdf8;
   --border: rgba(255, 255, 255, 0.08);
+  --font-body: "Inter", sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
 }
 
 html {

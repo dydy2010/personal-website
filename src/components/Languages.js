@@ -1,5 +1,6 @@
 "use client";
 
+import Reveal from "@/components/Reveal";
 import { motion } from "framer-motion";
 import { languages } from "@/data/content";
 
@@ -8,11 +9,13 @@ const barColors = ["bg-dmn", "bg-cen", "bg-sal", "bg-dmn"];
 export default function Languages() {
   return (
     <section id="languages" className="relative z-10 mx-auto max-w-wrap px-7 py-24">
-      <p className="text-xs uppercase tracking-[4px] text-muted">Languages</p>
-      <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
-        Four languages as training data
-      </h2>
-      <p className="mt-4 max-w-2xl text-muted">{languages.intro}</p>
+      <Reveal>
+        <p className="text-sm uppercase tracking-[4px] text-muted">Languages</p>
+        <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
+          Four languages as training data
+        </h2>
+        <p className="mt-4 max-w-2xl text-muted">{languages.intro}</p>
+      </Reveal>
 
       <div className="mt-10 grid gap-6 sm:grid-cols-2">
         {languages.items.map((l, i) => (

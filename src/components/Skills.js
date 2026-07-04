@@ -8,7 +8,7 @@ export default function Skills() {
   return (
     <section id="skills" className="relative z-10 mx-auto max-w-wrap px-7 py-24">
       <Reveal>
-        <p className="text-xs uppercase tracking-[4px] text-muted">Skills</p>
+        <p className="text-sm uppercase tracking-[4px] text-muted">Skills</p>
         <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
           The toolkit
         </h2>
