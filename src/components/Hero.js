@@ -57,14 +57,6 @@ export default function Hero() {
             >
               Get in touch
             </a>
-            <a
-              href={links.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="glass-btn rounded-full px-5 py-2.5 text-sm font-semibold"
-            >
-              LinkedIn
-            </a>
           </div>
 
           {/* quick-stats strip */}

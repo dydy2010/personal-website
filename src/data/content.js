@@ -12,7 +12,7 @@ export const profile = {
   kicker: ["Humanistic", "Creative", "AI-Driven"],
   hook: "I think in four languages and build machines that think in one.",
   capability:
-    "I build LLM and agentic systems end-to-end — RAG pipelines, LangGraph agents, and evaluation harnesses — and ship them with LLMOps practices.",
+    "From data acquisition and modelling through evaluation and deployment — RAG pipelines, LangGraph agents, and evaluation harnesses, run with LLMOps practices.",
   availability: "Open to AI/ML engineering roles in Switzerland.",
   location: "Switzerland",
   metaphorNote: "The brain and its three networks — a metaphor for how I think.",
@@ -57,7 +57,7 @@ export const stats = [
 ];
 
 export const about = {
-  lead: "I'm a Data Scientist and AI Engineer based in Switzerland who builds LLM-powered and agentic systems end-to-end — from data acquisition and modelling through evaluation and LLMOps deployment.",
+  lead: "I'm a Data Scientist and AI Engineer based in Switzerland, building LLM-powered and agentic systems end-to-end.",
   // data lifecycle framing: shows I own the full pipeline, not just one slice
   pipeline: ["Acquire", "Model", "Evaluate", "Deploy (LLMOps)"],
   // each block maps to one of the brain's three networks (AI-Driven leads)
@@ -74,7 +74,7 @@ export const about = {
       pillar: "Creative",
       network: "Salience",
       color: "var(--sal)",
-      text: "The switch. I like deciding what actually matters, then connecting the dots other people leave scattered — picking the right model and the right metric, not the flashiest one.",
+      text: "The switch. I like deciding what actually matters, then connecting dots that would otherwise stay scattered — picking the right model and the right metric, not the flashiest one.",
     },
     {
       key: "dmn",
@@ -84,7 +84,6 @@ export const about = {
       text: "Eight years moving freight across Europe and Asia, four languages, an MA in translation. I learned to read people and systems before I read tensors.",
     },
   ],
-  close: "Open to AI/ML engineering roles in Switzerland.",
 };
 
 export const timeline = [

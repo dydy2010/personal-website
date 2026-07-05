@@ -25,7 +25,7 @@ export default function About() {
                 {stage}
               </span>
               {i < about.pipeline.length - 1 && (
-                <span className="text-muted">{"->"}</span>
+                <span className="text-muted">→</span>
               )}
             </span>
           ))}

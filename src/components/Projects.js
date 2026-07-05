@@ -96,7 +96,7 @@ export default function Projects() {
                       rel="noopener noreferrer"
                       className="text-sm font-semibold text-cen hover:underline"
                     >
-                      {l.label} {"->"}
+                      {l.label} →
                     </a>
                   ))}
                 </div>

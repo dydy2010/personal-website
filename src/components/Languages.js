@@ -12,7 +12,7 @@ export default function Languages() {
       <Reveal>
         <p className="text-sm uppercase tracking-[4px] text-muted">Languages</p>
         <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
-          Four languages as training data
+          Four languages, one job: translating intent
         </h2>
         <p className="mt-4 max-w-2xl text-muted">{languages.intro}</p>
       </Reveal>
