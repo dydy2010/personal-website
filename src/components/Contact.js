@@ -1,22 +1,25 @@
 import Reveal from "@/components/Reveal";
-import { profile, links } from "@/data/content";
+import { links } from "@/data/links";
 
 const email = `${links.emailUser}@${links.emailDomain}`;
 
-const channels = [
-  { label: "Email", value: email, href: `mailto:${email}` },
-  { label: "LinkedIn", value: "in/dongyuan-gao", href: links.linkedin },
-  { label: "GitHub", value: "dydy2010", href: links.github },
-  { label: "Location", value: profile.location, href: null },
-];
+export default function Contact({ dict }) {
+  const { profile, ui } = dict;
 
-export default function Contact() {
+  // built inside the component because the Location label/value are localized
+  const channels = [
+    { label: "Email", value: email, href: `mailto:${email}` },
+    { label: "LinkedIn", value: "in/dongyuan-gao", href: links.linkedin },
+    { label: "GitHub", value: "dydy2010", href: links.github },
+    { label: ui.locationLabel, value: profile.location, href: null },
+  ];
+
   return (
     <section id="contact" className="relative z-10 mx-auto max-w-wrap px-7 py-24">
       <Reveal>
-        <p className="text-sm uppercase tracking-[4px] text-muted">Contact</p>
+        <p className="text-sm uppercase tracking-[4px] text-muted">{ui.contactKicker}</p>
         <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
-          Let&apos;s build something that thinks
+          {ui.contactHeading}
         </h2>
         <p className="mt-4 max-w-xl text-muted">{profile.availability}</p>
       </Reveal>

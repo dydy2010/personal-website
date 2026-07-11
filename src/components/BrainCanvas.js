@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { heroNets } from "@/data/content";
 
 // Triple Network Model "Thinking Brain" hero animation.
 // Ported from the locked aurora mockup into a self-contained React client component.
@@ -13,7 +12,10 @@ import { heroNets } from "@/data/content";
 //  - After a one-time intro (drift → assemble), the three networks cycle
 //    automatically: Humanistic → Creative → AI-Driven, ~5s each, with a
 //    short animated "hand-over" between them. The mouse only adds parallax.
-export default function BrainCanvas() {
+// heroNets (localized labels for the three networks) comes from the page's
+// dictionary via Hero. A locale change remounts the page, so reading it once
+// inside the effect is safe.
+export default function BrainCanvas({ heroNets }) {
   const canvasRef = useRef(null);
   const tintRef = useRef(null);
   const capRef = useRef(null);
@@ -104,7 +106,7 @@ export default function BrainCanvas() {
 
       const bx = 70, by = 70, bw = 282, bh = 188;
       const H = (fx, fy) => map(bx + fx * bw, by + fy * bh);
-      // label text (val/name/desc) lives in src/data/content.js
+      // label text (val/name/desc) comes from the heroNets prop (per-locale dictionary)
       NETS = {
         dmn: {
           color: "#6ee7b7", ...heroNets.dmn, speed: 0.4,

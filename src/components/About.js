@@ -1,11 +1,11 @@
 import Reveal from "@/components/Reveal";
-import { profile, about } from "@/data/content";
 
-export default function About() {
+export default function About({ dict }) {
+  const { profile, about, ui } = dict;
   return (
     <section id="about" className="relative z-10 mx-auto max-w-wrap px-7 py-24">
       <Reveal>
-        <p className="text-sm uppercase tracking-[4px] text-muted">About</p>
+        <p className="text-sm uppercase tracking-[4px] text-muted">{ui.aboutKicker}</p>
         <h2 className="mt-3 max-w-3xl font-display text-3xl font-bold leading-tight sm:text-4xl">
           {about.lead}
         </h2>
@@ -47,7 +47,7 @@ export default function About() {
                 </span>
               </div>
               <p className="mt-1 text-xs uppercase tracking-wider text-muted">
-                {n.network} Network
+                {n.network}
               </p>
               <p className="mt-3 text-sm leading-relaxed text-ink/80">{n.text}</p>
             </div>

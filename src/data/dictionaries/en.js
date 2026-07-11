@@ -28,6 +28,9 @@ const en = {
     aboutKicker: "About",
     projectsKicker: "Projects",
     projectsHeading: "Things I've built (and am building)",
+    problem: "Problem",
+    approach: "Approach",
+    result: "Result",
     skillsKicker: "Skills",
     skillsHeading: "The toolkit",
     languagesKicker: "Languages",
@@ -79,7 +82,7 @@ const en = {
   },
 
   stats: [
-    { value: "8 yrs", label: "delivery" },
+    { value: "8 yrs", label: "logistics" },
     { value: "4", label: "languages" },
     { value: "MSc", label: "@ HSLU" },
     { value: "Agentic-AI", label: "thesis" },
@@ -92,21 +95,21 @@ const en = {
       {
         key: "cen",
         pillar: "AI-Driven",
-        network: "Central Executive",
+        network: "Central Executive Network",
         color: "var(--cen)",
         text: "I build LLM and agentic systems — RAG, LangChain, LangGraph, and evaluation — with LLMOps practices to take them from prototype to deployment. I'm finishing my MSc at HSLU with a thesis on agentic AI for healthcare.",
       },
       {
         key: "sal",
         pillar: "Creative",
-        network: "Salience",
+        network: "Salience Network",
         color: "var(--sal)",
         text: "The switch. I like deciding what actually matters, then connecting dots that would otherwise stay scattered — picking the right model and the right metric, not the flashiest one.",
       },
       {
         key: "dmn",
         pillar: "Humanistic",
-        network: "Default Mode",
+        network: "Default Mode Network",
         color: "var(--dmn)",
         text: "Eight years moving freight across Europe and Asia, four languages, an MA in translation. I learned to read people and systems before I read tensors.",
       },

@@ -1,13 +1,14 @@
 import BrainCanvas from "@/components/BrainCanvas";
-import { profile, links, stats } from "@/data/content";
+import { links } from "@/data/links";
 
 // Assemble the email at render time (small spam-scraper deterrent).
 const email = `${links.emailUser}@${links.emailDomain}`;
 
-export default function Hero() {
+export default function Hero({ dict }) {
+  const { profile, stats, ui } = dict;
   return (
     <header className="relative h-screen min-h-[640px] w-full overflow-hidden">
-      <BrainCanvas />
+      <BrainCanvas heroNets={dict.heroNets} />
 
       {/* scrim for text legibility over the brain/aurora */}
       <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-b from-bg/70 via-bg/40 to-bg/60 sm:bg-gradient-to-r sm:from-bg/60 sm:via-bg/20 sm:to-transparent" />
@@ -42,20 +43,20 @@ export default function Hero() {
               href="#projects"
               className="glass-btn-primary rounded-full bg-gradient-to-r from-dmn to-cen px-5 py-2.5 text-sm font-semibold text-bg"
             >
-              View Projects
+              {ui.viewProjects}
             </a>
             <a
               href={links.resume}
               download
               className="glass-btn rounded-full px-5 py-2.5 text-sm font-semibold"
             >
-              Download Resume
+              {ui.downloadResume}
             </a>
             <a
               href={`mailto:${email}`}
               className="glass-btn rounded-full px-5 py-2.5 text-sm font-semibold"
             >
-              Get in touch
+              {ui.getInTouch}
             </a>
           </div>
 

@@ -1,23 +1,52 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { profile, links } from "@/data/content";
-
-// Absolute anchors (with leading "/") so they work from any page, e.g. /story.
-const navLinks = [
-  { label: "About", href: "/#about" },
-  { label: "Story", href: "/story" },
-  { label: "Projects", href: "/#projects" },
-  { label: "Skills", href: "/#skills" },
-  { label: "Contact", href: "/#contact" },
-];
+import { usePathname } from "next/navigation";
+import { links } from "@/data/links";
+import { locales, localeLabels } from "@/data/locales";
 
 const email = `${links.emailUser}@${links.emailDomain}`;
 
-export default function Nav() {
+// Swaps the locale segment of the current path, keeping the rest.
+// e.g. switchPath("/de/story", "zh") -> "/zh/story"
+function switchPath(pathname, target) {
+  const rest = pathname.split("/").slice(2).join("/");
+  return `/${target}${rest ? `/${rest}` : ""}`;
+}
+
+export default function Nav({ dict, lang }) {
   // controls the mobile dropdown menu (open/closed)
   const [open, setOpen] = useState(false);
   const navRef = useRef(null);
+  const pathname = usePathname() || `/${lang}`;
+
+  // Locale-prefixed anchors (absolute, so they work from /de/story etc.)
+  const navLinks = [
+    { label: dict.ui.nav.about, href: `/${lang}#about` },
+    { label: dict.ui.nav.story, href: `/${lang}/story` },
+    { label: dict.ui.nav.projects, href: `/${lang}#projects` },
+    { label: dict.ui.nav.skills, href: `/${lang}#skills` },
+    { label: dict.ui.nav.contact, href: `/${lang}#contact` },
+  ];
+
+  // Small pill group: EN | DE | ES | 中文 — the current one is highlighted.
+  const switcher = (
+    <div className="flex items-center gap-1 rounded-full border border-white/10 p-1" aria-label="Language">
+      {locales.map((l) => (
+        <a
+          key={l}
+          href={switchPath(pathname, l)}
+          onClick={() => setOpen(false)}
+          aria-current={l === lang ? "page" : undefined}
+          className={`rounded-full px-2 py-0.5 text-xs font-semibold transition-colors ${
+            l === lang ? "bg-white/10 text-ink" : "text-muted hover:text-ink"
+          }`}
+        >
+          {localeLabels[l]}
+        </a>
+      ))}
+    </div>
+  );
 
   // close the mobile menu on Escape or click-outside
   useEffect(() => {
@@ -44,11 +73,11 @@ export default function Nav() {
     <nav ref={navRef} className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/50 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-wrap items-center justify-between px-7">
         <a
-          href="/"
+          href={`/${lang}`}
           onClick={() => setOpen(false)}
           className="font-display text-base font-bold tracking-wide"
         >
-          <span className="text-cen">◆</span> {profile.name}
+          <span className="text-cen">◆</span> {dict.profile.name}
         </a>
 
         {/* desktop links */}
@@ -66,8 +95,9 @@ export default function Nav() {
             href={`mailto:${email}`}
             className="glass-btn rounded-full px-4 py-1.5 text-sm font-semibold text-ink"
           >
-            Get in touch
+            {dict.ui.getInTouch}
           </a>
+          {switcher}
         </div>
 
         {/* mobile hamburger button */}
@@ -118,8 +148,9 @@ export default function Nav() {
               onClick={() => setOpen(false)}
               className="glass-btn mt-2 rounded-full px-4 py-2.5 text-center text-sm font-semibold text-ink"
             >
-              Get in touch
+              {dict.ui.getInTouch}
             </a>
+            <div className="mt-3 flex justify-center">{switcher}</div>
           </div>
         </div>
       )}

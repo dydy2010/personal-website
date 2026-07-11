@@ -2,17 +2,17 @@
 
 import Reveal from "@/components/Reveal";
 import { motion } from "framer-motion";
-import { languages } from "@/data/content";
 
 const barColors = ["bg-dmn", "bg-cen", "bg-sal", "bg-dmn"];
 
-export default function Languages() {
+export default function Languages({ dict }) {
+  const { languages, ui } = dict;
   return (
     <section id="languages" className="relative z-10 mx-auto max-w-wrap px-7 py-24">
       <Reveal>
-        <p className="text-sm uppercase tracking-[4px] text-muted">Languages</p>
+        <p className="text-sm uppercase tracking-[4px] text-muted">{ui.languagesKicker}</p>
         <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
-          Four languages, one job: translating intent
+          {ui.languagesHeading}
         </h2>
         <p className="mt-4 max-w-2xl text-muted">{languages.intro}</p>
       </Reveal>

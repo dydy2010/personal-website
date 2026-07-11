@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { timeline } from "@/data/content";
 
 // Aurora colors cycled across milestones to tie the storyline to the brain theme.
 const COLORS = ["#38bdf8", "#a78bfa", "#6ee7b7", "#38bdf8", "#a78bfa"];
@@ -51,7 +50,7 @@ function Milestone({ item, index, total, progress, color }) {
   );
 }
 
-export default function Storyline() {
+export default function Storyline({ timeline }) {
   const ref = useRef(null);
 
   // Track how far we've scrolled THROUGH this section.

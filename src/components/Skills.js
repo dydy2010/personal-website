@@ -1,16 +1,16 @@
 import Reveal from "@/components/Reveal";
-import { skills } from "@/data/content";
 
 // Tint the first (AI/LLM) group so the AI focus reads first.
 const accents = ["border-cen/40 text-cen", "border-sal/40 text-sal", "border-dmn/40 text-dmn", "border-white/10 text-muted"];
 
-export default function Skills() {
+export default function Skills({ dict }) {
+  const { skills, ui } = dict;
   return (
     <section id="skills" className="relative z-10 mx-auto max-w-wrap px-7 py-24">
       <Reveal>
-        <p className="text-sm uppercase tracking-[4px] text-muted">Skills</p>
+        <p className="text-sm uppercase tracking-[4px] text-muted">{ui.skillsKicker}</p>
         <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
-          The toolkit
+          {ui.skillsHeading}
         </h2>
       </Reveal>
 

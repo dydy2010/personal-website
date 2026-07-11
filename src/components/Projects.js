@@ -2,36 +2,38 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { projects, projectFilters } from "@/data/content";
 
+// Filtering always compares against the canonical English `value`
+// (tags stay English in every locale) — only the pill `label` is translated.
 function matches(project, filter) {
   if (filter === "All") return true;
   const f = filter.toLowerCase();
   return project.tags.some((t) => t.toLowerCase().includes(f));
 }
 
-export default function Projects() {
+export default function Projects({ dict }) {
+  const { projects, projectFilters, ui } = dict;
   const [filter, setFilter] = useState("All");
   const visible = projects.filter((p) => matches(p, filter));
 
   return (
     <section id="projects" className="relative z-10 mx-auto max-w-wrap px-7 py-24">
-      <p className="text-sm uppercase tracking-[4px] text-muted">Projects</p>
+      <p className="text-sm uppercase tracking-[4px] text-muted">{ui.projectsKicker}</p>
       <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
-        Things I&apos;ve built (and am building)
+        {ui.projectsHeading}
       </h2>
 
       {/* filter pills */}
       <div className="mt-8 flex flex-wrap gap-2">
         {projectFilters.map((f) => (
           <button
-            key={f}
-            onClick={() => setFilter(f)}
+            key={f.value}
+            onClick={() => setFilter(f.value)}
             className={`glass-btn rounded-full px-4 py-1.5 text-sm font-medium ${
-              filter === f ? "is-active" : "text-muted"
+              filter === f.value ? "is-active" : "text-muted"
             }`}
           >
-            {f}
+            {f.label}
           </button>
         ))}
       </div>
@@ -62,15 +64,15 @@ export default function Projects() {
 
               <dl className="mt-4 space-y-2 text-sm">
                 <div>
-                  <dt className="text-xs uppercase tracking-wider text-sal">Problem</dt>
+                  <dt className="text-xs uppercase tracking-wider text-sal">{ui.problem}</dt>
                   <dd className="text-ink/80">{p.problem}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wider text-dmn">Approach</dt>
+                  <dt className="text-xs uppercase tracking-wider text-dmn">{ui.approach}</dt>
                   <dd className="text-ink/80">{p.approach}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wider text-cen">Result</dt>
+                  <dt className="text-xs uppercase tracking-wider text-cen">{ui.result}</dt>
                   <dd className="text-ink/80">{p.result}</dd>
                 </div>
               </dl>
