@@ -144,7 +144,7 @@ export const projects = [
   },
   {
     title: "Predicting Student Success",
-    badge: "2025 · ML",
+    badge: "2025 · ML · Team",
     tags: ["Python", "scikit-learn", "ML"],
     problem: "Can we flag at-risk students early from their academic and demographic data?",
     approach: "Cleaned and explored the dataset, engineered features, then trained and compared Logistic Regression, SVM, and a neural network using cross-validation on standard classification metrics (accuracy, F1).",
