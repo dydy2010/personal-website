@@ -161,7 +161,7 @@ const de = {
       badge: "IBM watsonx Challenge · Team",
       tags: ["NLP", "LLMs", "RAG"],
       problem: "Die Neutralität von Wikipedia variiert zwischen den Sprachversionen — und manuelle Bias-Prüfung skaliert nicht.",
-      approach: "Pipeline über 5'000 Artikel und 1'000 Entitäten in 5 Sprachen. Doppelte Bias-Erkennung: Sentiment-Lexika (VADER + sprachspezifisch) und LLMs (Zero-Shot BART-MNLI, feinjustiertes XLM-R), dazu ein Dashboard und ein RAG-Chatbot (MiniLM-Embeddings, FAISS, Gradio).",
+      approach: "Pipeline über 5'000 Artikel und 1'000 Entitäten in 5 Sprachen. Doppelte Bias-Erkennung: Sentiment-Lexika (VADER + sprachspezifisch) und LLMs (Zero-Shot BART-MNLI, feinabgestimmtes XLM-R), dazu ein Dashboard und ein RAG-Chatbot (MiniLM-Embeddings, FAISS, Gradio).",
       result: "XLM-R-F1 von 0,19 auf 0,60 verbessert; geschätzt 30–50 % weniger manuelle Prüfzeit für Editoren.",
       links: [],
     },
@@ -170,7 +170,7 @@ const de = {
       badge: "2026 · Computer Vision · Team",
       tags: ["Computer Vision", "Deep Learning", "Python"],
       problem: "Eine Fahrszene zu verstehen braucht mehr als ein Modell — Detektion, Klassifikation, Segmentierung und Erklärung.",
-      approach: "4-stufige Pipeline auf Fahrvideos: feinjustiertes YOLO (11 Verkehrsklassen), eingefrorenes OpenCLIP + Linear Probe zur Markenerkennung (20 Marken), semantische Segmentierung mit SegFormer-B5 und ein lokales VLM (Ollama) für Beschreibungen und Frame-Q&A.",
+      approach: "4-stufige Pipeline auf Fahrvideos: feinabgestimmtes YOLO (11 Verkehrsklassen), eingefrorenes OpenCLIP + Linear Probe zur Markenerkennung (20 Marken), semantische Segmentierung mit SegFormer-B5 und ein lokales VLM (Ollama) für Beschreibungen und Frame-Q&A.",
       result: "End-to-end annotierte Videodemos, evaluiert mit mAP@0.5 / mAP@0.5:0.95. Code auf GitHub.",
       links: [{ label: "GitHub", url: "https://github.com/dydy2010/computer_vision_hslu_2026" }],
     },
@@ -189,7 +189,7 @@ const de = {
       tags: ["R", "Time Series", "Data Analysis"],
       problem: "Bewegen SNB-Zinsentscheide tatsächlich die Schweizer Kerninflation?",
       approach: "Zeitreihenanalyse in R: ADF-Stationaritätstests, Lag-Regression, Event-Studies um Zinsschritte, VAR, Granger-Kausalität und ARIMA-Prognosen — publiziert als Quarto-Report.",
-      result: "Leitzinsen Granger-verursachen die Inflation (nicht umgekehrt); die Erhöhung vom Oktober 2022 hatte einen signifikanten Effekt. Report und Code auf GitHub.",
+      result: "Die Leitzinsen sind Granger-kausal für die Inflation (nicht umgekehrt); die Erhöhung vom Oktober 2022 hatte einen signifikanten Effekt. Report und Code auf GitHub.",
       links: [{ label: "GitHub", url: "https://github.com/dydy2010/time_series_project" }],
     },
   ],
@@ -226,7 +226,7 @@ const de = {
   languages: {
     // REVIEW: "kein Partytrick" für "isn't trivia" — freier, aber natürlicher
     intro:
-      "Vier Sprachen sind kein Partytrick — sie sind Trainingsdaten. Der Wechsel zwischen Chinesisch, Englisch, Spanisch und Deutsch hat mich gelehrt, Absichten zwischen sehr unterschiedlichen Systemen zu übersetzen — was, verdächtig genau, das meiste von Prompt Engineering ist.",
+      "Vier Sprachen sind kein Partytrick — sie sind Trainingsdaten. Der Wechsel zwischen Chinesisch, Englisch, Spanisch und Deutsch hat mich gelehrt, Absichten zwischen sehr unterschiedlichen Systemen zu übersetzen — was verdächtig genau das ist, was Prompt Engineering ausmacht.",
     items: [
       { lang: "Chinesisch", level: "Muttersprache", pct: 100 },
       { lang: "Englisch", level: "C1", pct: 90 },

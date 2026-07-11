@@ -224,7 +224,7 @@ const es = {
   languages: {
     // REVIEW: "sospechosamente" mantiene el guiño del original
     intro:
-      "Cuatro idiomas no son una anécdota — son datos de entrenamiento. Alternar entre chino, inglés, español y alemán me enseñó a traducir la intención entre sistemas muy distintos, que es, sospechosamente, casi todo lo que hace el prompt engineering.",
+      "Cuatro idiomas no son una anécdota — son datos de entrenamiento. Alternar entre chino, inglés, español y alemán me enseñó a traducir la intención entre sistemas muy distintos, que es, sospechosamente, casi todo lo que implica el prompt engineering.",
     items: [
       { lang: "Chino", level: "Nativo", pct: 100 },
       { lang: "Inglés", level: "C1", pct: 90 },

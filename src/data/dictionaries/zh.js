@@ -85,7 +85,7 @@ const zh = {
     { value: "8 年", label: "物流经验" },
     { value: "4", label: "种语言" },
     { value: "硕士", label: "在读 @ HSLU" },
-    { value: "智能体 AI", label: "毕业论文" },
+    { value: "智能体 AI", label: "硕士论文" },
   ],
 
   about: {
@@ -97,7 +97,7 @@ const zh = {
         pillar: "AI 驱动",
         network: "中央执行网络",
         color: "var(--cen)",
-        text: "我构建 LLM 与智能体系统 — RAG、LangChain、LangGraph 和评估 — 并以 LLMOps 实践把它们从原型推进到部署。我正在 HSLU 完成硕士学业，毕业论文研究医疗领域的智能体 AI。",
+        text: "我构建 LLM 与智能体系统 — RAG、LangChain、LangGraph 和评估 — 并以 LLMOps 实践把它们从原型推进到部署。我正在 HSLU 攻读硕士，论文研究医疗领域的智能体 AI。",
       },
       {
         key: "sal",
@@ -147,7 +147,7 @@ const zh = {
   projects: [
     {
       title: "放射科智能体系统",
-      badge: "毕业论文 · 进行中",
+      badge: "硕士论文 · 进行中",
       tags: ["Agentic AI", "LLMs", "Evaluation"],
       problem: "放射科团队要在报告、指南和影像工作流之间处理碎片化的信息。",
       approach: "设计并评估一个能跨任务与工具推理的智能体 AI 系统（LangGraph），评估机制从一开始就内建其中。",
