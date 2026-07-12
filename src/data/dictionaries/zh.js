@@ -50,8 +50,8 @@ const zh = {
   profile: {
     // REVIEW: 中文版直接用中文名，比拼音更自然
     name: "高东元",
-    firstName: "东元",
-    lastName: "高",
+    firstName: "高",
+    lastName: "东元",
     role: "数据科学家 & AI 工程师",
     kicker: ["人文", "创造", "AI 驱动"],
     hook: "我用四种语言思考，也打造用一种语言思考的机器。",

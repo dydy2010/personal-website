@@ -4,7 +4,7 @@ import { links } from "@/data/links";
 // Assemble the email at render time (small spam-scraper deterrent).
 const email = `${links.emailUser}@${links.emailDomain}`;
 
-export default function Hero({ dict }) {
+export default function Hero({ dict, lang }) {
   const { profile, stats, ui } = dict;
   return (
     <header className="relative h-screen min-h-[640px] w-full overflow-hidden">
@@ -23,10 +23,15 @@ export default function Hero({ dict }) {
           </p>
 
           <h1 className="font-display text-[clamp(34px,6vw,64px)] font-bold leading-[1.04] tracking-tight [text-shadow:0_0_50px_rgba(120,180,255,0.28)]">
-            {profile.firstName}{" "}
-            <span className="bg-gradient-to-r from-dmn to-cen bg-clip-text text-transparent">
-              {profile.lastName}
-            </span>
+            {profile.firstName}
+            {profile.lastName && (
+              <>
+                {lang !== "zh" && " "}
+                <span className="bg-gradient-to-r from-dmn to-cen bg-clip-text text-transparent">
+                  {profile.lastName}
+                </span>
+              </>
+            )}
           </h1>
 
           <p className="mt-2.5 font-display text-[clamp(17px,2.6vw,24px)] font-semibold tracking-wide">
